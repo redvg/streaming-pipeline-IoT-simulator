@@ -17,11 +17,11 @@ data is from sensors along San Diego highway \
 sensors publish speeds of cars in a particular lane
 
 ### sensors.py
-`publish()` publishes messages
+`publish()` publishes messages \
 see commit a8b30485f6ec4f834efd30a1b69155daf530d74d for obsolete batch msging \
 note `TOPIC` const \
 `simulate()` simulates sensors data \
--`compute_sleep_secs()` determines how long to wait based on  `speedFactor`
+-`compute_sleep_secs()` determines how long to wait based on  `speedFactor` \
 -when time passes `publish()` is called
 
 ### init.sh
