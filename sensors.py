@@ -11,6 +11,7 @@ TIME_FORMAT = '%Y-%m-%d %H:%M:%S'
 TOPIC = 'sensors'
 INPUT = 'sensor_obs2008.csv.gz'
 
+# TODO: vg: optional use of batch msging
 def publish(publisher, topic, events):
    numobs = len(events)
    if numobs > 0:
@@ -60,8 +61,8 @@ def peek_timestamp(ifp):
    ifp.seek(pos)
    return get_timestamp(line)
 
+def run():
 
-if __name__ == '__main__':
    parser = argparse.ArgumentParser(description='Send sensor data to Cloud Pub/Sub in small groups, simulating real-time behavior')
    parser.add_argument('--speedFactor', help='Example: 60 implies 1 hour of data sent to Cloud Pub/Sub in 1 minute', required=True, type=float)
    parser.add_argument('--project', help='Example: --project $DEVSHELL_PROJECT_ID', required=True)
@@ -85,3 +86,8 @@ if __name__ == '__main__':
       firstObsTime = peek_timestamp(ifp)
       logging.info('Sending sensor data from {}'.format(firstObsTime))
       simulate(event_type, ifp, firstObsTime, programStartTime, args.speedFactor)
+
+
+if __name__ == '__main__':
+
+    run()
