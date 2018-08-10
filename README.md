@@ -17,7 +17,7 @@ data is from sensors along San Diego highway \
 sensors publish speeds of cars in a particular lane \
 run: `python sensors.py --speedFactor=60 --project=$DEVSHELL_PROJECT_ID` \
 `speedFactor` 60 sends roughly 477 events every 5 seconds \
-nb: more on pub&sub at  https://github.com/GoogleCloudPlatform/python-docs-samples/blob/master/pubsub/cloud-client/subscriber.py \
+nb: deeper dive at  https://github.com/GoogleCloudPlatform/python-docs-samples/blob/master/pubsub/cloud-client/subscriber.py \
 https://github.com/GoogleCloudPlatform/python-docs-samples/blob/master/pubsub/cloud-client/publisher.py \
 
 ### sensors.py
@@ -30,3 +30,11 @@ note `TOPIC` const \
 
 ### init.sh
 fetches sensors data
+
+### subscribe.py
+an illustration of how the stream could be consumed \
+consumes msgs from pull sub \
+effectively acts as push sub \
+run: `python subscribe.py --project=$DEVSHELL_PROJECT_ID --topic=sensors --name=sensorsSub`
+
+ 

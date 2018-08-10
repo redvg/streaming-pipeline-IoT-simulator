@@ -43,8 +43,5 @@ if __name__ == '__main__':
    while True:
         time.sleep(60)
 
-# just go to https://console.cloud.google.com/cloudpubsub/subscriptions/cpsubs
-# and publish some messages. You will see the payload inmediately on cloudshell
-#
-# note even if we are pulling behind the scenes, the client libraries are designed so from the developer's point of view
+# NB: even if we are pulling behind the scenes, the client libraries are designed so from the developer's point of view
 # it works like a push. You just register a callback and forget. No need to keep looping and pulling and sleeping
