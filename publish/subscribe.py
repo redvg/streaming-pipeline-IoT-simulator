@@ -8,9 +8,7 @@ def callback(message):
 
   message.ack()
 
-# make sure you replace "javier" with your project name
-
-subscription_path = 'projects/udemy-data-engineer-210920/subscriptions/sensors'
+subscription_path = 'projects/udemy-data-engineer-210920/topics/sensors'
 
 subscriber.subscribe(subscription_path, callback=callback)
 
