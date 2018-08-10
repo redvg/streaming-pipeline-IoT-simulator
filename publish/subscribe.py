@@ -10,7 +10,7 @@ def callback(message):
 
 # make sure you replace "javier" with your project name
 
-subscription_path = 'projects/javier/subscriptions/cpsubs'
+subscription_path = 'projects/udemy-data-engineer-210920/subscriptions/sensors'
 
 subscriber.subscribe(subscription_path, callback=callback)
 
