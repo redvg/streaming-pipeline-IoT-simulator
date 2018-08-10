@@ -37,6 +37,11 @@ if __name__ == '__main__':
 
    print('Listening for messages on {}'.format(subscription_path))
 
+   # The subscriber is non-blocking, so we must keep the main thread from
+   # exiting to allow it to process messages in the background.
+   while True:
+        time.sleep(60)
+
 # just go to https://console.cloud.google.com/cloudpubsub/subscriptions/cpsubs
 # and publish some messages. You will see the payload inmediately on cloudshell
 #
