@@ -16,7 +16,7 @@ holds sensors simulator publisher \
 data is from sensors along San Diego highway \
 sensors publish speeds of cars in a particular lane \
 run: `python sensors.py --speedFactor=60 --project=$DEVSHELL_PROJECT_ID` \
-`speedFactor` 60 sends roughly 477 events every 5 seconds \
+`speedFactor` 60 sends roughly 477 events every 5 seconds
 
 ### sensors.py
 `publish()` publishes messages \
