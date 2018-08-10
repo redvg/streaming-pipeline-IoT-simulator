@@ -35,7 +35,9 @@ fetches sensors data
 an illustration of how the stream could be consumed \
 consumes msgs from pull sub \
 effectively acts as push sub \
-run: `python subscribe.py --project=$DEVSHELL_PROJECT_ID --topic=sensors --name=sensorsSub`
+run: `python subscribe.py --project=$DEVSHELL_PROJECT_ID --topic=sensors --name=sensorsSub` \
 
+pub
  ![Screenshot](publish_pub.png)
+sub
  ![Screenshot](publish_sub.png)
