@@ -37,4 +37,5 @@ consumes msgs from pull sub \
 effectively acts as push sub \
 run: `python subscribe.py --project=$DEVSHELL_PROJECT_ID --topic=sensors --name=sensorsSub`
 
- 
+ ![Screenshot](publish_pub.png)
+ ![Screenshot](publish_sub.png)
