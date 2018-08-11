@@ -47,7 +47,7 @@ def run():
 
         speeds = stream | 'SpeedOnHighway' >> beam.Map(lambda x: (x[3], x[6]))
 
-        window = speeds | beam.WindowInto(beam.transforms.window.FixedWindows(60, 0))
+        window = speeds | beam.WindowInto(beam.transforms.window.FixedWindows(1, 0))
 
         formatted = (window
             | 'Group' >> beam.GroupByKey()
