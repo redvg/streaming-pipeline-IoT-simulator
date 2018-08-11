@@ -55,7 +55,7 @@ def run():
             | 'FormatForBQ' >> beam.Map(lambda x: {'freeway': str(x[0]), 'speed': x[1]})
         )
 
-        formatted | 'SinkToBQ' >> beam.io.WriteToBigQuery(args.bq
+        formatted | 'SinkToBQ' >> beam.io.WriteToBigQuery(args.bq,
                 schema='lane:STRING, avgspeed:FLOAT',
                 create_disposition=beam.io.BigQueryDisposition.CREATE_IF_NEEDED,
                 write_disposition=beam.io.BigQueryDisposition.WRITE_TRUNCATE)

@@ -3,7 +3,7 @@
 echo 'launching streaming pipeline'
 echo 'usage: ./run.sh Project BigQueryDataset.Table PubSubTopic'
 
-if ["$#" -lt 3]; then
+if ["$#" -ne 3]; then
   echo 'wrong usage'
   exit
 fi
