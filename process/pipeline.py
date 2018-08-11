@@ -35,7 +35,8 @@ def run():
       '--save_main_session',
       '--staging_location=gs://{0}/{1}/staging/'.format(BUCKET_ID, BUCKET_FOLDER),
       '--temp_location=gs://{0}/{1}/staging/'.format(BUCKET_ID, BUCKET_FOLDER),
-      '--runner=DataflowRunner']
+      '--runner=DataflowRunner',
+      '--streaming']
 
     with beam.Pipeline(argv=argv) as pipeline:
 
@@ -51,7 +52,10 @@ def run():
             |   'Average' >> beam.Map(resolve_average_speed)
         )
 
-        transformed | 'SinkToBQ' >> beam.io.WriteToBigQuery(args.bq)
+        transformed | 'SinkToBQ' >> beam.io.WriteToBigQuery(args.bq,
+        schema=('lane:STRING,avgspeed:FLOAT'),
+        create_disposition=beam.io.BigQueryDisposition.CREATE_IF_NEEDED,
+        write_disposition=beam.io.BigQueryDisposition.WRITE_APPEND)
 
 if __name__ == '__main__':
 
