@@ -41,8 +41,8 @@ def run():
 
         pubsub_topic_path = 'projects/{0}/topics/{1}'.format(args.project,
                                                              args.pubsub)
-                                                             
-        stream = pipeline | beam.io.ReadFromPubSub(args.pubsub)
+
+        stream = pipeline | beam.io.ReadFromPubSub(pubsub_topic_path)
 
         transformed = (stream
             |  'SpeedOnLane' >> beam.Map(lambda x: (x[3], x[6]))
