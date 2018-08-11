@@ -37,7 +37,7 @@ def run():
       '--temp_location=gs://{0}/{1}/staging/'.format(BUCKET_ID, BUCKET_FOLDER),
       '--runner=DataflowRunner']
 
-    with pipeline = beam.Pipeline(argv=argv):
+    with beam.Pipeline(argv=argv) as pipeline:
 
         stream = pipeline | beam.io.ReadFromPubSub(args.pubsub)
 
