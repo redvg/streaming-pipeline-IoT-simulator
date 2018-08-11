@@ -7,9 +7,9 @@ BUCKET_ID = 'udemy-data-engineer-210920'
 BUCKET_FOLDER = 'iot-stream'
 
 
-def resolve_average_speed(record):
+def resolve_average_speed(el):
 
-    (freeway, speed) = record
+    (freeway, speed) = el
 
     return (freeway, sum(speed) / len(speed))
 
@@ -45,16 +45,20 @@ def run():
 
         stream = pipeline | beam.io.ReadFromPubSub(pubsub_topic_path)
 
-        transformed = (stream
-            |  'SpeedOnHighway' >> beam.Map(lambda x: (x[3], x[6]))
-            |   beam.WindowInto(beam.transforms.window.FixedWindows(10, 0))
-            |   'Group' >> beam.GroupByKey()
-            |   'Average' >> beam.Map(resolve_average_speed)
+        speeds = stream | 'SpeedOnHighway' >> beam.Map(lambda x: (x[3], x[6]))
+
+        window = speeds | beam.WindowInto(beam.transforms.window.FixedWindows(60, 0))
+
+        formatted = (window
+            | 'Group' >> beam.GroupByKey()
+            | 'Average' >> beam.Map(resolve_average_speed)
+            | 'FormatForBQ' >> beam.Map(lambda x: {'freeway': str(x[0]), 'speed': x[1]})
         )
 
-        transformed | 'SinkToBQ' >> beam.io.WriteToBigQuery(args.bq)
-
-        pipeline.run()
+        formatted | 'SinkToBQ' >> beam.io.WriteToBigQuery(args.bq
+                schema='lane:STRING, avgspeed:FLOAT',
+                create_disposition=beam.io.BigQueryDisposition.CREATE_IF_NEEDED,
+                write_disposition=beam.io.BigQueryDisposition.WRITE_TRUNCATE)
 
 if __name__ == '__main__':
 
