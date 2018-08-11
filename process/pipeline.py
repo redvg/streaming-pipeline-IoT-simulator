@@ -11,7 +11,7 @@ def resolve_average_speed(el):
 
     (freeway, speed) = el
 
-    return (freeway, sum(speed))
+    return (freeway, sum(speed)) #/len(speed)
 
 def run():
 
@@ -52,7 +52,7 @@ def run():
         formatted = (window
             | 'Group' >> beam.GroupByKey()
             | 'Average' >> beam.Map(resolve_average_speed)
-            | 'FormatForBQ' >> beam.Map(lambda x: {'freeway': str(x[0]), 'speed': x[1]})
+            | 'FormatForBQ' >> beam.Map(lambda x: [{'freeway': str(x[0]), 'speed': x[1]}])
         )
 
         formatted | 'SinkToBQ' >> beam.io.WriteToBigQuery(args.bq,
