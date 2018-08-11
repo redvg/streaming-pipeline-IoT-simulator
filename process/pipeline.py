@@ -11,7 +11,7 @@ def resolve_average_speed(el):
 
     (freeway, speed) = el
 
-    return (freeway, sum(speed) / len(speed))
+    return (freeway, sum(speed))
 
 def run():
 
@@ -45,7 +45,7 @@ def run():
 
         stream = pipeline | beam.io.ReadFromPubSub(pubsub_topic_path)
 
-        speeds = stream | 'SpeedOnHighway' >> beam.Map(lambda x: (x[3], x[6]))
+        speeds = stream | 'SpeedOnHighway' >> beam.Map(lambda x: (x[3], float(x[6])))
 
         window = speeds | beam.WindowInto(beam.transforms.window.FixedWindows(1, 0))
 
