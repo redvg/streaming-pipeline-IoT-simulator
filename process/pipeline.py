@@ -46,16 +46,15 @@ def run():
         stream = pipeline | beam.io.ReadFromPubSub(pubsub_topic_path)
 
         transformed = (stream
-            |  'SpeedOnLane' >> beam.Map(lambda x: (x[3], x[6]))
+            |  'SpeedOnHighway' >> beam.Map(lambda x: (x[3], x[6]))
             |   beam.WindowInto(beam.transforms.window.FixedWindows(10, 0))
             |   'Group' >> beam.GroupByKey()
             |   'Average' >> beam.Map(resolve_average_speed)
         )
 
-        transformed | 'SinkToBQ' >> beam.io.WriteToBigQuery(args.bq,
-        schema=('lane:STRING,avgspeed:FLOAT'),
-        create_disposition=beam.io.BigQueryDisposition.CREATE_IF_NEEDED,
-        write_disposition=beam.io.BigQueryDisposition.WRITE_APPEND)
+        transformed | 'SinkToBQ' >> beam.io.WriteToBigQuery(args.bq)
+
+        pipeline.run()
 
 if __name__ == '__main__':
 
