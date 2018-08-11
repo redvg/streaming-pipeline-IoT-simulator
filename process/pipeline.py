@@ -39,6 +39,9 @@ def run():
 
     with beam.Pipeline(argv=argv) as pipeline:
 
+        pubsub_topic_path = 'projects/{0}/topics/{1}'.format(args.project,
+                                                             args.pubsub)
+                                                             
         stream = pipeline | beam.io.ReadFromPubSub(args.pubsub)
 
         transformed = (stream
