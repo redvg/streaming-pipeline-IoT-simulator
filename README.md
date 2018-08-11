@@ -46,7 +46,7 @@ sub
 
 ## process
 `./init.sh` \
-`./run.sh` \
+`./run.sh $DEVSHELL_PROJECT_ID iot.sensors sensors` \
 chmod u+x ... \
 consumes PubSub topic stream in DataFlow
 calculates average speed on each highway \
