@@ -25,13 +25,20 @@ class SpeedOnFreewayFn(beam.DoFn):
 
 class FormatBQRowFn(beam.DoFn):
 
-    def process(self, el):
+    def process(self, el, window=beam.DoFn.WindowParam):
 
         #logging.info('FormatBQRowFn in {}'.format(el))
 
+        ts_format = '%Y-%m-%d %H:%M:%S.%f UTC'
+
+        window_start = window.start.to_utc_datetime().strftime(ts_format)
+        window_end = window.end.to_utc_datetime().strftime(ts_format)
+
         formatted = {
             'freeway': str(el[0]),
-            'speed': el[1]
+            'speed': el[1],
+            'window_start': window_start,
+            'window_end': window_end
             }
 
         #logging.info('FormatBQRowFn out {}'.format(formatted))
@@ -42,7 +49,9 @@ def resolve_average_speed(el):
 
     (freeway, speed) = el
 
-    return (freeway, sum(speed)) #/len(speed)
+    average_speed = sum(speed)/len(speed) if len(speed) > 0 else 0
+
+    return (freeway, average_speed)
 
 def run():
 
@@ -90,7 +99,7 @@ def run():
         #| 'FormatForBQ' >> beam.Map(lambda x: {'freeway': str(x[0]), 'speed': x[1]})
 
         formatted | 'SinkToBQ' >> beam.io.WriteToBigQuery(args.bq,
-                schema='freeway:STRING, speed:FLOAT',
+                schema='freeway:STRING, speed:FLOAT, window_start:TIMESTAMP, window_end:TIMESTAMP',
                 create_disposition=beam.io.BigQueryDisposition.CREATE_IF_NEEDED,
                 write_disposition=beam.io.BigQueryDisposition.WRITE_APPEND)
 
