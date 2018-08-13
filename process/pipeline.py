@@ -71,7 +71,7 @@ def run():
 
     argv = [
       '--project={0}'.format(args.project),
-      '--job_name=iotstream3',
+      '--job_name=iotstream',
       '--save_main_session',
       '--staging_location=gs://{0}/{1}/staging/'.format(BUCKET_ID, BUCKET_FOLDER),
       '--temp_location=gs://{0}/{1}/staging/'.format(BUCKET_ID, BUCKET_FOLDER),
