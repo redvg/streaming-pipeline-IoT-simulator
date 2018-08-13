@@ -58,7 +58,7 @@ def run():
 
         stream = pipeline | beam.io.ReadFromPubSub(pubsub_topic_path)
 
-        speeds = stream | 'SpeedOnFreeway' >> beam.ParDo(SpeedOnFreewayFn)
+        speeds = stream | 'SpeedOnFreeway' >> beam.ParDo(SpeedOnFreewayFn())
         #speeds = stream | 'SpeedOnHighway' >> beam.Map(lambda x: (x[3], float(x[6])))
 
         window = speeds | beam.WindowInto(beam.transforms.window.FixedWindows(1, 0))
