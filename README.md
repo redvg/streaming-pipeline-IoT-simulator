@@ -71,27 +71,13 @@ https://github.com/apache/beam/blob/master/sdks/python/apache_beam/examples/stre
 https://beam.apache.org/documentation/sdks/pydoc/2.6.0/apache_beam.io.gcp.bigquery.html \
 https://beam.apache.org/documentation/sdks/python-streaming/ \
 https://beam.apache.org/get-started/mobile-gaming-example/#leaderboard-streaming-processing-with-real-time-game-data \
+https://beam.apache.org/documentation/programming-guide/index.html#core-beam-transforms \
 https://cloud.google.com/dataflow/pipelines/specifying-exec-params#streaming-execution \
 https://cloud.google.com/blog/products/data-analytics/dataflow-stream-processing-now-supports-python \
 https://cloud.google.com/blog/products/data-analytics/review-of-input-streaming-connectors-for-apache-beam-and-apache-spark \
 https://cloud.google.com/dataflow/release-notes/release-notes-python \
 https://beam.apache.org/blog/2018/06/26/beam-2.5.0.html \
-
-
-
-
-
-
-
-
-
-
-
-
- create bq dataset
- bq mk --iot
-
-
+https://github.com/apache/beam/blob/master/sdks/python/apache_beam/examples/cookbook/bigquery_tornadoes.py \
 
  GetMessages
  ExtractData
