@@ -18,7 +18,7 @@ class SpeedOnFreewayFn(beam.DoFn):
 
         logging.info(freeway_and_speed)
 
-        yield x
+        yield freeway_and_speed
 
 def resolve_average_speed(el):
 
