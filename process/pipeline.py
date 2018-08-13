@@ -14,7 +14,7 @@ class SpeedOnFreewayFn(beam.DoFn):
 
         logging.info(el)
 
-        freeway_and_speed = (x[3], float(x[6]))
+        freeway_and_speed = (el[3], float(el[6]))
 
         logging.info(freeway_and_speed)
 
