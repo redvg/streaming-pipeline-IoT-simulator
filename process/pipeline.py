@@ -12,6 +12,8 @@ class SpeedOnFreewayFn(beam.DoFn):
 
     def process(self, el):
 
+        logging.info('+')
+
         logging.info(el)
 
         freeway_and_speed = (el[3], float(el[6]))
