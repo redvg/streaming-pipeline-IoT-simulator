@@ -12,7 +12,7 @@ class SpeedOnFreewayFn(beam.DoFn):
 
     def process(self, el):
 
-        logging.info('SpeedOnFreewayFn in {}'.format(el)
+        logging.info('SpeedOnFreewayFn in {}'.format(el))
 
         parsed = el.split(',')
 
@@ -26,7 +26,7 @@ class FormatBQRowFn(beam.DoFn):
 
     def process(self, el):
 
-        logging.info('FormatBQRowFn in {}'.format(el)
+        logging.info('FormatBQRowFn in {}'.format(el))
 
         formatted = {
             'freeway': str(el[0]),
