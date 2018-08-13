@@ -7,11 +7,17 @@ BUCKET_ID = 'udemy-data-engineer-210920'
 BUCKET_FOLDER = 'iot-stream'
 
 import logging
+
 class SpeedOnFreewayFn(beam.DoFn):
+
     def process(self, el):
+
         logging.info(el)
-        freeway_and_speed = (x[3], float(x[6])
+
+        freeway_and_speed = (x[3], float(x[6]))
+
         logging.info(freeway_and_speed)
+
         yield x
 
 def resolve_average_speed(el):
