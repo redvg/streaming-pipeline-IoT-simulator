@@ -2,23 +2,24 @@
 
 import apache_beam as beam
 import argparse
+import logging
+
 
 BUCKET_ID = 'udemy-data-engineer-210920'
 BUCKET_FOLDER = 'iot-stream'
 
-import logging
 
 class SpeedOnFreewayFn(beam.DoFn):
 
     def process(self, el):
 
-        logging.info('SpeedOnFreewayFn in {}'.format(el))
+        #logging.info('SpeedOnFreewayFn in {}'.format(el))
 
         parsed = el.split(',')
 
         freeway_and_speed = (str(parsed[3]), float(parsed[6]))
 
-        logging.info('SpeedOnFreewayFn out {}'.format(freeway_and_speed))
+        #logging.info('SpeedOnFreewayFn out {}'.format(freeway_and_speed))
 
         yield freeway_and_speed
 
@@ -26,27 +27,16 @@ class FormatBQRowFn(beam.DoFn):
 
     def process(self, el):
 
-        logging.info('FormatBQRowFn in {}'.format(el))
+        #logging.info('FormatBQRowFn in {}'.format(el))
 
         formatted = {
             'freeway': str(el[0]),
             'speed': el[1]
             }
 
-        logging.info('FormatBQRowFn out {}'.format(formatted))
+        #logging.info('FormatBQRowFn out {}'.format(formatted))
 
         yield formatted
-
-
-'''class AverageSpeedFn(beam.DoFn):
-
-    def process(self, el):
-
-        logging.info('AverageSpeedFn in {}'.format(el)
-
-
-        logging.info('AverageSpeedFn in {}'.format(el)'''
-
 
 def resolve_average_speed(el):
 
@@ -89,7 +79,7 @@ def run():
         speeds = stream | 'SpeedOnFreeway' >> beam.ParDo(SpeedOnFreewayFn())
         #speeds = stream | 'SpeedOnHighway' >> beam.Map(lambda x: (x[3], float(x[6])))
 
-        window = speeds | beam.WindowInto(beam.transforms.window.FixedWindows(1, 0))
+        window = speeds | beam.WindowInto(beam.transforms.window.FixedWindows(5, 0))
 
         average = (window
             | 'Group' >> beam.GroupByKey()
