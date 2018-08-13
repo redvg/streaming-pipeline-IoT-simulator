@@ -6,6 +6,13 @@ import argparse
 BUCKET_ID = 'udemy-data-engineer-210920'
 BUCKET_FOLDER = 'iot-stream'
 
+import logging
+class SpeedOnFreewayFn(beam.DoFn):
+    def process(self, el):
+        logging.info(el)
+        freeway_and_speed = (x[3], float(x[6])
+        logging.info(freeway_and_speed)
+        yield x
 
 def resolve_average_speed(el):
 
@@ -45,14 +52,15 @@ def run():
 
         stream = pipeline | beam.io.ReadFromPubSub(pubsub_topic_path)
 
-        speeds = stream | 'SpeedOnHighway' >> beam.Map(lambda x: (x[3], float(x[6])))
+        speeds = stream | 'SpeedOnFreeway' >> beam.ParDo(SpeedOnFreewayFn)
+        #speeds = stream | 'SpeedOnHighway' >> beam.Map(lambda x: (x[3], float(x[6])))
 
         window = speeds | beam.WindowInto(beam.transforms.window.FixedWindows(1, 0))
 
         formatted = (window
             | 'Group' >> beam.GroupByKey()
             | 'Average' >> beam.Map(resolve_average_speed)
-            | 'FormatForBQ' >> beam.Map(lambda x: [{'freeway': str(x[0]), 'speed': x[1]}])
+            | 'FormatForBQ' >> beam.Map(lambda x: {'freeway': str(x[0]), 'speed': x[1]})
         )
 
         formatted | 'SinkToBQ' >> beam.io.WriteToBigQuery(args.bq,
