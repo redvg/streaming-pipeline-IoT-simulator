@@ -1,4 +1,4 @@
-ETL Pipeline on GCP. PubSub publisher which simualates IoT sensors streaming data. PubSub subscriber as an ingress. DataFlow as data transform. BigQuery as a sink.
+ETL Pipeline on GCP. PubSub publisher which simulates IoT sensors streaming data. PubSub subscriber as an ingress. DataFlow as data transform. BigQuery as a sink.
 
 ![Screenshot](1.png)
 (created with https://online.visual-paradigm.com)
@@ -46,26 +46,49 @@ sub
  ![Screenshot](publish_sub.png)
 
 ## process
-`./init.sh` \
+`./init.sh iot.sensors` \
 `./run.sh $DEVSHELL_PROJECT_ID iot.sensors sensors` \
 chmod u+x ... \
 consumes PubSub topic stream in DataFlow
 calculates average speed on each highway \
-sinks to BigQuery \
+sinks to BigQuery
 
 ### init.sh
 creates BigQuery dataset \
 creates BigQuery table \
-pips \
+pips
 
 ### run.sh
-runs Apache Beam pipeline on Cloud DataFlow backend \
+runs Apache Beam pipeline on Cloud DataFlow backend
 
 ### pipeline.py
+Apache Beam pipeline built with Python SDK \
+streaming connection to PubSub via `ReadFromPubSub` \
+performs the following transforms: \
+`SpeedOnFreewayFn` extracts freeway id and speed \
+`WindowInto` takes 5-minutes' windows \
+note: needs to be performed BEFORE grouping operation like `GroupByKey` otherwise will be in pending indefinetely \
+`GroupByKey` groups by freeway \
+`resolve_average_speed` gets the average speed on the freeway \
+`FormatBQRowFn` adds window start&end and formats into serializable \
+`WriteToBigQuery` sinks to BigQuery
 
+dag
+![Screenshot](dag1.png)
+![Screenshot](dag2.png)
+bq
+![Screenshot](bq.png)
 
-NOTE: py streaming is in beta
-see
+## NB
+
+### streaming for python SDK is in beta
+monitor progress in gcp py sdk release notes apache beam release notes \
+(first 2 links below) \
+like the is that dataflow UI is sluggish, kinda useless to monitor \
+user the stackdriver logs and metrics and output itself \
+also some useful stuff on the streaming can be found below \
+https://cloud.google.com/dataflow/release-notes/release-notes-python \
+https://beam.apache.org/blog/2018/06/26/beam-2.5.0.html \
 https://github.com/apache/beam/blob/master/sdks/python/apache_beam/examples/windowed_wordcount.py \
 https://github.com/apache/beam/blob/master/sdks/python/apache_beam/examples/streaming_wordcount.py \
 https://beam.apache.org/documentation/sdks/pydoc/2.6.0/apache_beam.io.gcp.bigquery.html \
@@ -75,15 +98,22 @@ https://beam.apache.org/documentation/programming-guide/index.html#core-beam-tra
 https://cloud.google.com/dataflow/pipelines/specifying-exec-params#streaming-execution \
 https://cloud.google.com/blog/products/data-analytics/dataflow-stream-processing-now-supports-python \
 https://cloud.google.com/blog/products/data-analytics/review-of-input-streaming-connectors-for-apache-beam-and-apache-spark \
-https://cloud.google.com/dataflow/release-notes/release-notes-python \
-https://beam.apache.org/blog/2018/06/26/beam-2.5.0.html \
 https://github.com/apache/beam/blob/master/sdks/python/apache_beam/examples/cookbook/bigquery_tornadoes.py \
 
- GetMessages
- ExtractData
- TimeWindow
- AvgBySensor
- -groupbykey
- -combine.groupedvalues
- ToBQRow
- BigQueryIO.Write
+### BigQuery streaming
+you might be trapped with `this table has records in the streaming buffer that may not be visible in the preview` \
+thats about bq not updating UI \
+query will yield though
+
+### ParDos
+lambdas removed for logging sake \
+uncomment to revert
+
+### verbosity
+uncomment to make verbose \
+then select stackdriver logging \
+\
+stackdriver
+![Screenshot](log1.png)
+![Screenshot](log2.png)
+![Screenshot](log3.png)
