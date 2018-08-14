@@ -1,6 +1,6 @@
 ETL Pipeline on GCP. PubSub publisher which simulates IoT sensors streaming data. PubSub subscriber as an ingress. DataFlow as data transform. BigQuery as a sink.
 
-![Screenshot](1.png)
+![Screenshot](architecture.png)
 (created with https://online.visual-paradigm.com)
 
 as per https://github.com/GoogleCloudPlatform/training-data-analyst/tree/master/courses/streaming \
