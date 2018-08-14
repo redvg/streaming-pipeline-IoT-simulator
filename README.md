@@ -117,3 +117,11 @@ stackdriver
 ![Screenshot](log1.png)
 ![Screenshot](log2.png)
 ![Screenshot](log3.png)
+
+
+## explore
+contains jupyter notebook for gcp DataLab \
+few basics data explorations \
+using BigQuery and Charts API
+
+![Screenshot](datalab.png)
